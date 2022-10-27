@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-sugar
+  namespace: knative-eventing
+data:
+  namespace-selector: |
+    matchExpressions:
+    - key: "eventing.knative.dev/injection"
+      operator: "In"
+      values: ["enabled"]
+
+  trigger-selector: |
+    matchExpressions:
+    - key: "eventing.knative.dev/injection"
+      operator: "In"
+      values: ["enabled"]

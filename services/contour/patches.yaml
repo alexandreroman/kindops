@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: envoy
+  namespace: contour-external
+  annotations:
+    $patch: delete
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+spec:
+  $patch: replace
+  externalTrafficPolicy: Local
+  type: NodePort
+  ports:
+  - name: http
+    nodePort: 31080
+    port: 80
+    targetPort: 8080
+  selector:
+    app: envoy
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: envoy
+  namespace: contour-external
+spec:
+  template:
+    spec:
+      nodeSelector:
+        ingress-ready: "true"
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Equal
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        operator: Equal
+        effect: NoSchedule

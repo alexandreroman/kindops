@@ -1,0 +1,29 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: opentelemetry
+  namespace: kindops
+spec:
+  interval: 5m
+  url: https://open-telemetry.github.io/opentelemetry-helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: opentelemetry
+  namespace: kindops
+spec:
+  releaseName: opentelemetry
+  targetNamespace: opentelemetry-operator-system
+  interval: 1m
+  chart:
+    spec:
+      chart: opentelemetry-operator
+      version: 0.18.0
+      sourceRef:
+        kind: HelmRepository
+        name: opentelemetry
+        namespace: kindops
+  install:
+    createNamespace: true
+  values:

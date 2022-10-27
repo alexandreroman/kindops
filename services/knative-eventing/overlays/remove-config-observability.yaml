@@ -1,0 +1,4 @@
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"metadata":{"name":"config-observability", "labels": {"knative.dev/config-category": "eventing"}}}), expects=2
+#@overlay/remove

@@ -1,0 +1,4 @@
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"metadata":{"name":"config-sugar"}}), expects=1
+#@overlay/remove

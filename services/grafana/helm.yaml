@@ -1,0 +1,93 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: grafana
+  namespace: kindops
+spec:
+  interval: 5m
+  url: https://grafana.github.io/helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: kindops
+spec:
+  releaseName: grafana
+  targetNamespace: grafana
+  interval: 1m
+  chart:
+    spec:
+      chart: grafana
+      version: 6.43.5
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: kindops
+  values:
+    admin:
+      existingSecret: grafana-user
+      userKey: user
+      passwordKey: password
+    ingress:
+      enabled: true
+      hosts:
+      - grafana.127.0.0.1.nip.io
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+        - name: prometheus
+          type: prometheus
+          url: http://prometheus-server.prometheus.svc.cluster.local
+          isDefault: true
+          jsonData:
+            httpMethod: POST
+            exemplarTraceIdDestinations:
+            - name: trace_id
+              datasourceUid: tempo
+        - name: loki
+          type: loki
+          url: http://loki-querier.loki.svc.cluster.local:3100
+          jsonData:
+            derivedFields:
+            - datasourceUid: tempo
+              matcherRegex: \[.+,(.+?),
+              name: TraceID
+              url: $${__value.raw}
+        - name: tempo
+          type: tempo
+          url: http://tempo-query-frontend.tempo.svc.cluster.local:3100
+          jsonData:
+            httpMethod: GET
+            tracesToLogs:
+              datasourceUid: 'loki'
+              tags: [ 'instance', 'pod', 'namespace', 'hostname' ]
+              mappedTags: [ { key: 'service.name', value: 'application' } ]
+              mapTagNamesEnabled: true
+              spanStartTimeShift: '1h'
+              spanEndTimeShift: '1h'
+              filterByTraceID: true
+              filterBySpanID: false
+              lokiSearch: true
+            serviceMap:
+              datasourceUid: 'prometheus'
+            search:
+              hide: false
+            nodeGraph:
+              enabled: true
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: grafana
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-user
+  namespace: grafana
+type: Opaque
+stringData:
+  user: admin
+  password: changeme

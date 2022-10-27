@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- output/eventing.yaml
+- output/config-observability.yaml
+- output/config-tracing.yaml
+- output/config-sugar.yaml
+- output/event-display.yaml

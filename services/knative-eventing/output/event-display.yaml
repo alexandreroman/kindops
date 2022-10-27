@@ -1,0 +1,19 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: event-display
+  labels:
+    eventing.knative.dev/release: v1.8.0
+  namespace: knative-eventing
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/knative-releases/knative.dev/eventing/cmd/event_display@sha256:1d59c0501a620c2be8cf44af0b2c8ae972cf64f3b9455d2d65e728bd86a3c6d5
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+            - ALL
