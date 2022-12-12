@@ -50,7 +50,6 @@ check_command_exists() {
 create_cluster() {
   check_command_exists "kind"
   check_command_exists "kubectl"
-  check_command_exists "helm"
 
   echo "Generating KinD cluster configuration ✍️"
   CFG=$(mktemp)
