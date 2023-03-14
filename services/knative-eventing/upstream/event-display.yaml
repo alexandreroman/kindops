@@ -18,12 +18,12 @@ kind: Service
 metadata:
   name: event-display
   labels:
-    eventing.knative.dev/release: "v1.8.0"
+    eventing.knative.dev/release: "v1.8.8"
 spec:
   template:
     spec:
       containers:
-        - image: gcr.io/knative-releases/knative.dev/eventing/cmd/event_display@sha256:1d59c0501a620c2be8cf44af0b2c8ae972cf64f3b9455d2d65e728bd86a3c6d5
+        - image: gcr.io/knative-releases/knative.dev/eventing/cmd/event_display@sha256:a00bc79d91509a8833f438c75ab9ed1ef10ae89bec9034ecdb2bfde1d95f58a9
           # This is needed to run under the "restricted" Pod Security Standard
           securityContext:
             allowPrivilegeEscalation: false

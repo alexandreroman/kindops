@@ -7,7 +7,7 @@ directories:
   - path: .
     githubRelease:
       slug: knative/eventing
-      tag: knative-v1.8.0
+      tag: knative-v1.8.8
       disableAutoChecksumValidation: true
       assetNames:
       - eventing.yaml
