@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2022 VMware Inc.
+# Copyright 2023 VMware Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ EOF
 
 version() {
   echo "$APP_NAME $APP_VERSION"
-  echo "Copyright (c) 2022 VMware Inc."
+  echo "Copyright (c) 2023 VMware Inc."
 }
 
 check_command_exists() {
