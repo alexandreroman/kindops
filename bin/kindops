@@ -23,7 +23,7 @@ APP_VERSION=0.2.0
 GITOPS_URL=https://github.com/alexandreroman/kindops.git
 GITOPS_REV=main
 
-FLUXCD_VERSION=0.36.0
+FLUXCD_VERSION=0.41.1
 
 help() {
   cat <<EOF
