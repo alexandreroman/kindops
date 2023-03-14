@@ -1,11 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- https://github.com/knative/serving/releases/download/knative-v1.8.0/serving-core.yaml
-- https://github.com/knative/serving/releases/download/knative-v1.8.0/serving-hpa.yaml
-- https://github.com/knative/net-certmanager/releases/download/knative-v1.8.0/release.yaml
-- https://raw.githubusercontent.com/knative-sandbox/net-contour/knative-v1.6.0/config/contour/internal.yaml
-- https://github.com/knative/net-contour/releases/download/knative-v1.8.0/net-contour.yaml
+- https://github.com/knative/serving/releases/download/knative-v1.9.2/serving-core.yaml
+- https://github.com/knative/serving/releases/download/knative-v1.9.2/serving-hpa.yaml
+- https://github.com/knative/net-certmanager/releases/download/knative-v1.9.2/release.yaml
+- https://raw.githubusercontent.com/knative-sandbox/net-contour/knative-v1.9.3/config/contour/internal.yaml
+- https://github.com/knative/net-contour/releases/download/knative-v1.9.2/net-contour.yaml
 patchesStrategicMerge:
 - patches.yaml
 replicas:
