@@ -59,7 +59,7 @@ apiVersion: kind.x-k8s.io/v1alpha4
 name: $APP_NAME
 nodes:
 - role: control-plane
-  image: kindest/node:v1.24.7@sha256:577c630ce8e509131eab1aea12c022190978dd2f745aac5eb1fe65c0807eb315
+  image: kindest/node:v1.24.13@sha256:cea86276e698af043af20143f4bf0509e730ec34ed3b7fa790cc0bea091bc5dd
   kubeadmConfigPatches:
   - |
     kind: InitConfiguration
