@@ -18,12 +18,12 @@
 set -euo pipefail
 
 APP_NAME=kindops
-APP_VERSION=0.2.0
+APP_VERSION=0.3.0
 
-GITOPS_URL=https://github.com/alexandreroman/kindops.git
-GITOPS_REV=main
+KINDOPS_URL=https://github.com/alexandreroman/kindops.git
+KINDOPS_REV=main
 
-FLUXCD_VERSION=0.41.1
+FLUXCD_VERSION=2.0.0-rc.3
 
 help() {
   cat <<EOF
@@ -31,7 +31,7 @@ Usage: $APP_NAME <command>
 Available commands:
   create             Create a KinD cluster
   destroy            Destroy a KinD cluster
-  install <service>  Install a GitOps-powered service
+  install <addon>    Install a GitOps-powered addon
   help               Show this help message
   version            Display app version
 EOF
@@ -86,20 +86,20 @@ destroy_cluster() {
   kind delete cluster --name $APP_NAME
 }
 
-install_service() {
+install_addon() {
   SVC="$1"
   check_command_exists "kubectl"
 
   echo "Installing $SVC 🎉"
   cat <<EOF | kubectl apply -f -
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: $SVC
   namespace: $APP_NAME
 spec:
   interval: 1m
-  path: ./services/$SVC
+  path: ./addons/$SVC
   wait: true
   prune: true
   force: true
@@ -110,7 +110,7 @@ spec:
     name: $APP_NAME
 EOF
 
-  echo "Waiting for service ⏱️"
+  echo "Waiting for addon ⏱️"
   kubectl wait kustomization --timeout=-1s --for=condition=Ready $SVC -n $APP_NAME > /dev/null
 }
 
@@ -133,25 +133,25 @@ kind: Namespace
 metadata:
   name: $APP_NAME
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: $APP_NAME
   namespace: $APP_NAME
 spec:
   interval: 5m
-  url: $GITOPS_URL
+  url: $KINDOPS_URL
   ref:
-    branch: $GITOPS_REV
+    branch: $KINDOPS_REV
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: default
   namespace: $APP_NAME
 spec:
   interval: 1m
-  path: ./services/default
+  path: ./addons/default
   wait: true
   prune: true
   force: true
@@ -190,12 +190,12 @@ destroy)
   ;;
 install)
   if ! [ "$#" -eq 2 ]; then
-    echo "Please go to this page to see available services:"
-    echo "  $APP_GITOPS_URL"
-    echo "No service set. Aborting 💀"
+    echo "Please go to this page to see available addons:"
+    echo "  $KINDOPS_URL"
+    echo "No addon set. Aborting 💀"
     exit 2
   fi
-  install_service "$2"
+  install_addon "$2"
   ;;
 *)
   help; exit 2
