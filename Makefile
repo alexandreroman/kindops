@@ -4,4 +4,4 @@
 MAKE := make
 
 all:
-	$(MAKE) -C ./services/knative-eventing
+	$(MAKE) -C ./addons/knative-eventing

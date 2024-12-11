@@ -1,13 +1,15 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: HelmRepository
+kind: OCIRepository
 metadata:
   name: tempo
   namespace: kindops
 spec:
   interval: 5m
-  url: https://charts.bitnami.com/bitnami
+  url: oci://registry-1.docker.io/bitnamicharts/grafana-tempo
+  ref:
+    semver: "3.8.0"
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: tempo
@@ -16,14 +18,10 @@ spec:
   releaseName: tempo
   targetNamespace: tempo
   interval: 1m
-  chart:
-    spec:
-      chart: grafana-tempo
-      version: 1.4.4
-      sourceRef:
-        kind: HelmRepository
-        name: tempo
-        namespace: kindops
+  chartRef:
+    kind: OCIRepository
+    name: tempo
+    namespace: kindops
   install:
     createNamespace: true
   values:

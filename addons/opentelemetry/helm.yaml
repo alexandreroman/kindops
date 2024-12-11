@@ -19,7 +19,7 @@ spec:
   chart:
     spec:
       chart: opentelemetry-operator
-      version: 0.18.0
+      version: 0.75.0
       sourceRef:
         kind: HelmRepository
         name: opentelemetry
@@ -27,3 +27,6 @@ spec:
   install:
     createNamespace: true
   values:
+    manager:
+      collectorImage:
+        repository: otel/opentelemetry-collector

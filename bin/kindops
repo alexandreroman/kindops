@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright 2023 VMware Inc.
 #
@@ -18,12 +18,12 @@
 set -euo pipefail
 
 APP_NAME=kindops
-APP_VERSION=0.3.0
+APP_VERSION=0.4.0
 
 KINDOPS_URL=https://github.com/alexandreroman/kindops.git
-KINDOPS_REV=main
+KINDOPS_REV=next
 
-FLUXCD_VERSION=2.0.0-rc.3
+FLUXCD_VERSION=2.4.0
 
 help() {
   cat <<EOF
@@ -59,7 +59,7 @@ apiVersion: kind.x-k8s.io/v1alpha4
 name: $APP_NAME
 nodes:
 - role: control-plane
-  image: kindest/node:v1.24.13@sha256:cea86276e698af043af20143f4bf0509e730ec34ed3b7fa790cc0bea091bc5dd
+  image: kindest/node:v1.31.2@sha256:18fbefc20a7113353c7b75b5c869d7145a6abd6269154825872dc59c1329912e
   kubeadmConfigPatches:
   - |
     kind: InitConfiguration

@@ -1,13 +1,15 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: HelmRepository
+kind: OCIRepository
 metadata:
   name: loki
   namespace: kindops
 spec:
   interval: 5m
-  url: https://charts.bitnami.com/bitnami
+  url: oci://registry-1.docker.io/bitnamicharts/grafana-loki
+  ref:
+    semver: "4.7.0"
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: loki
@@ -16,14 +18,10 @@ spec:
   releaseName: loki
   targetNamespace: loki
   interval: 1m
-  chart:
-    spec:
-      chart: grafana-loki
-      version: 2.5.0
-      sourceRef:
-        kind: HelmRepository
-        name: loki
-        namespace: kindops
+  chartRef:
+    kind: OCIRepository
+    name: loki
+    namespace: kindops
   values:
     fullnameOverride: loki
 ---

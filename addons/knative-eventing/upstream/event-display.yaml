@@ -22,7 +22,7 @@ spec:
   template:
     spec:
       containers:
-        - image: gcr.io/knative-releases/knative.dev/eventing/cmd/event_display@sha256:e254da042f1710a5f8fe309317862f2fcedca10453912124c630a5fd61568f27
+        - image: gcr.io/knative-releases/knative.dev/eventing/cmd/event_display@sha256:e320a70266a012a5192f1645164e73482f47d6e93e08751bff5abeb2a4376d6d
           # This is needed to run under the "restricted" Pod Security Standard
           securityContext:
             allowPrivilegeEscalation: false
